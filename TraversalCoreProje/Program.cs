@@ -1,5 +1,6 @@
 using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
+using BusinessLayer.ValidationRules;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
@@ -41,8 +42,7 @@ builder.Services.AddScoped<ICommentDal, EfCommentDal>();
 builder.Services.AddScoped<ICommentService, ICommentManager>();
 
 builder.Services.AddDbContext<Context>(); //Context Taným
-
-builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>();//Identity Taným ve 
+builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>().AddErrorDescriber<CustomErrorDescriber>(); //IdentityTaným & Custom Error
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -67,5 +67,10 @@ app.UseAuthorization();
 app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Default}/{action=Index}/{id?}");
+
 
 app.Run();
