@@ -4,6 +4,7 @@ using DataAccessLayer.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20240515092430_mig_reservation")]
+    partial class mig_reservation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -140,9 +143,11 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Gender")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -451,13 +456,13 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Newsletters");
                 });
 
-            modelBuilder.Entity("EntityLayer.Concrete.Resarvation", b =>
+            modelBuilder.Entity("EntityLayer.Concrete.Reservation", b =>
                 {
-                    b.Property<int>("ResarvationID")
+                    b.Property<int>("ReservationId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ResarvationID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReservationId"));
 
                     b.Property<int>("AppUserId")
                         .HasColumnType("int");
@@ -466,7 +471,7 @@ namespace DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DestinationID")
+                    b.Property<int>("DestinationId")
                         .HasColumnType("int");
 
                     b.Property<string>("PersonCount")
@@ -480,13 +485,13 @@ namespace DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ResarvationID");
+                    b.HasKey("ReservationId");
 
                     b.HasIndex("AppUserId");
 
-                    b.HasIndex("DestinationID");
+                    b.HasIndex("DestinationId");
 
-                    b.ToTable("Resarvations");
+                    b.ToTable("Reservations");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.SubAbout", b =>
@@ -671,17 +676,17 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Guide");
                 });
 
-            modelBuilder.Entity("EntityLayer.Concrete.Resarvation", b =>
+            modelBuilder.Entity("EntityLayer.Concrete.Reservation", b =>
                 {
                     b.HasOne("EntityLayer.Concrete.AppUser", "AppUser")
-                        .WithMany("Resarvations")
+                        .WithMany("Reservations")
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EntityLayer.Concrete.Destination", "Destination")
-                        .WithMany("Reservations")
-                        .HasForeignKey("DestinationID")
+                        .WithMany()
+                        .HasForeignKey("DestinationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -745,14 +750,12 @@ namespace DataAccessLayer.Migrations
                 {
                     b.Navigation("Comments");
 
-                    b.Navigation("Resarvations");
+                    b.Navigation("Reservations");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Destination", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("Reservations");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Guide", b =>

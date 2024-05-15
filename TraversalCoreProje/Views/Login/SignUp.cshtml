@@ -55,7 +55,7 @@ Author URL: http://w3layouts.com
                         <h4>Bize Katılın</h4>
                         <p>Hemen ücretsiz hesap oluşturun :)</p>
                     </div>
-                    <form method="post" class="signin-form">
+                    <form method="post" class="signin-form" asp-action="SignUp" asp-controller="Login">
                         <div class="form-input">
                             <label>Adınız</label>
                             <input type="text" asp-for="Name" required />
@@ -94,7 +94,7 @@ Author URL: http://w3layouts.com
                             <input type="checkbox">
                             <span class="checkmark"></span>
                         </label>
-                        <button class="btn">Kayıt Ol</button>
+                        <button class="btn" type="submit">Kayıt Ol</button>
                     </form>
                     <div class="copy-right text-center">
                         <p>

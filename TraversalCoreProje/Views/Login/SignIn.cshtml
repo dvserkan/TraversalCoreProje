@@ -1,5 +1,6 @@
 ﻿
 @model TraversalCoreProje.Models.UserSignInViewModel
+
 @{
     Layout = null;
 }
@@ -36,13 +37,13 @@
                     <img src="~/Login_v1/images/img-01.png" alt="IMG">
                 </div>
 
-                <form class="login100-form validate-form" method="post">
+                <form class="login100-form validate-form" method="post" asp-action="SignIn" asp-controller="Login">
                     <span class="login100-form-title">
                         Misafir Giriş Sayfası
                     </span>
 
                     <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                        <input class="input100" type="text" asp-for="username" placeholder="Email">
+                        <input class="input100" type="text" asp-for="username" placeholder="Kullanıcı adı" >
                         <span asp-validation-for="username"></span>
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">
@@ -51,7 +52,7 @@
                     </div>
 
                     <div class="wrap-input100 validate-input" data-validate="Password is required">
-                        <input class="input100" type="password" asp-for="password" placeholder="Şifre">
+                        <input class="input100" type="password" asp-for="password" placeholder="Şifre" >
                         <span asp-validation-for="password"></span>
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">
@@ -59,8 +60,12 @@
                         </span>
                     </div>
 
+                    <div class="text-danger">
+                        @Html.ValidationSummary()
+                    </div>
+
                     <div class="container-login100-form-btn">
-                        <button class="login100-form-btn">
+                        <button class="login100-form-btn" type="submit">
                             Giriş Yap
                         </button>
                     </div>

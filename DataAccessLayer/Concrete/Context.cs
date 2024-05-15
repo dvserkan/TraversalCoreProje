@@ -13,7 +13,7 @@ namespace DataAccessLayer.Concrete
 	{
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder.UseSqlServer("Server=DESKTOP-PVJ83UH\\POSSQL;initial Catalog=TraversalDb;integrated Security=true;TrustServerCertificate=True");
+			optionsBuilder.UseSqlServer("Server=.\\POSSQL;initial Catalog=TraversalDb;user=sa;Password=sql123_;TrustServerCertificate=True");
 		}
 
 		public DbSet<About> Abouts { get; set; }
@@ -27,6 +27,8 @@ namespace DataAccessLayer.Concrete
 		public DbSet<SubAbout> SubAbouts { get; set; }
 		public DbSet<Testimonial> Testimonials { get; set; }
 		public DbSet<Comment> Comments { get; set; }
+		public DbSet<Resarvation> Resarvations { get; set; }
+	
 
 	}
 }
