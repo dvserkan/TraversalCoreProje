@@ -1,0 +1,56 @@
+﻿@model EntityLayer.Concrete.Destination
+
+@{
+    ViewData["Title"] = "AddDestination";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Yeni Rota Oluşturma Sayfası</h1>
+<form method="post">
+    <div class="form-group">
+        @Html.Label("Şehir")
+        @Html.TextBoxFor(x => x.City, new { @class = "form-control" })
+    </div>
+    <br />
+    <div class="form-group">
+        @Html.Label("Gün Gece")
+        @Html.TextBoxFor(x => x.DayNight, new { @class = "form-control" })
+    </div>
+    <br />
+    <div class="form-group">
+        @Html.Label("Fiyat")
+        @Html.TextBoxFor(x => x.Price, new { @class = "form-control" })
+    </div>
+    <br />
+    <div class="form-group">
+        @Html.Label("Ana Görsel")
+        @Html.TextBoxFor(x => x.ImageUrl, new { @class = "form-control" })
+    </div>
+    <br />
+    <div class="form-group">
+        @Html.Label("Kapasite")
+        @Html.TextBoxFor(x => x.Capacity, new { @class = "form-control" })
+    </div>
+    <br />
+    <div class="form-group">
+        @Html.Label("Kapak Görseli")
+        @Html.TextBoxFor(x => x.CoverImage, new { @class = "form-control" })
+    </div>
+    <br />
+    <div class="form-group">
+        @Html.Label("Görsel 2")
+        @Html.TextBoxFor(x => x.Image2, new { @class = "form-control" })
+    </div>
+    <br />
+    <div class="form-group">
+        @Html.Label("Detay 1")
+        @Html.TextAreaFor(x => x.Details1,3,5, new { @class = "form-control" })
+    </div>
+    <br />
+    <div class="form-group">
+        @Html.Label("Detay 2")
+        @Html.TextAreaFor(x => x.Details2, 3, 5, new { @class = "form-control" })
+    </div>
+    <br />
+    <button class="btn btn-outline-primary">Oluştur</button>
+</form>

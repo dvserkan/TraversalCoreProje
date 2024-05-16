@@ -13,14 +13,17 @@ namespace TraversalCoreProje.Controllers
 
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+		private readonly ILogger<LoginController> _logger;
+		DateTime logdate = Convert.ToDateTime(DateTime.Now.ToShortDateString());
 
-        public LoginController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-        }
+		public LoginController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ILogger<LoginController> logger)
+		{
+			_userManager = userManager;
+			_signInManager = signInManager;
+            _logger = logger;
+		}
 
-        [HttpGet]
+		[HttpGet]
         public IActionResult SignUp()
         {
             return View();
@@ -43,7 +46,8 @@ namespace TraversalCoreProje.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("SignIn");
+					_logger.LogInformation($"{p.Name} Kullanıcısı Saat: {logdate} Kayıt İşlemi Yapmıştır."); //Loglama İşlemi.
+					return RedirectToAction("SignIn");
                 }
                 else
                 {
@@ -72,20 +76,24 @@ namespace TraversalCoreProje.Controllers
                 var result = await _signInManager.PasswordSignInAsync(p.username, p.password, false, true);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Profile", new { area = "Member" });
-                }
+					_logger.LogInformation($"{p.username} Kullanıcısı Saat: {logdate} Giriş İşlemi Yapmıştır."); //Loglama İşlemi.
+					return RedirectToAction("Index", "Profile", new { area = "Member" });
+				}
                 else
                 {
                     return RedirectToAction("SignIn", "Login");
                 }
             }
-            return View();
-        }
+
+			return View();
+		}
 
         public async Task<IActionResult> LogOut()
         {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("SignIn", "Login");
+			var user = await _userManager.FindByNameAsync(User.Identity.Name);
+			_logger.LogInformation($"{user.Name} Kullanıcısı Saat: {logdate} Çıkış İşlemi Yapmıştır."); //Loglama İşlemi.
+			await _signInManager.SignOutAsync();
+			return RedirectToAction("SignIn", "Login");
 
         }
 

@@ -1,5 +1,5 @@
-﻿
-@model TraversalCoreProje.Areas.Member.Models.UserEditViewModel
+﻿@model TraversalCoreProje.Areas.Member.Models.UserEditViewModel
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
@@ -25,26 +25,26 @@
                     <p class="card-text">Profil ile ilgili bilgilerinizi bu sayfadan güncelleyebilirsiniz</p>
                     <form method="post" enctype="multipart/form-data">
                         @Html.Label("Adınız")
-                        <input type="text" asp-for="name" class="form-control" />
+                        @Html.TextBoxFor(x => x.name, new { @class = "form-control" })
                         <br />
                         @Html.Label("Soyadınız")
-                        <input type="text" asp-for="surname" class="form-control" />
+                        @Html.TextBoxFor(x => x.surname, new { @class = "form-control" })
                         <br />
                         @Html.Label("Mail Adresiniz")
-                        <input type="text" asp-for="mail" class="form-control" />
+                        @Html.TextBoxFor(x => x.mail, new { @class = "form-control" })
                         <br />
                         @Html.Label("Şifreniz")
-                        <input type="text" asp-for="password" class="form-control" />
+                        @Html.TextBoxFor(x => x.password, new { @class = "form-control" })
                         <br />
                         @Html.Label("Şifre Tekrar")
-                        <input type="text" asp-for="confirmpassword" class="form-control" />
+                        @Html.TextBoxFor(x => x.confirmpassword, new { @class = "form-control" })
                         <br />
                         @Html.Label("Telefon Numarası")
-                        <input type="text" asp-for="phonenumber" class="form-control" />
+                        @Html.TextBoxFor(x => x.phonenumber, new { @class = "form-control" })
                         <br />
                         <div class="form-group">
                             <label>Resim Seçin</label>
-                            <input type="file" asp-for="Image" />
+                            @Html.EditorFor(x => x.Image, new { htmlAttributes = new { @class = "form-control", type = "file" } })
                         </div>
                         <br />
                         <button class="btn btn-primary">Bilgileri Güncelle</button>
@@ -54,5 +54,3 @@
         </div>
     </div>
 </div>
-
-

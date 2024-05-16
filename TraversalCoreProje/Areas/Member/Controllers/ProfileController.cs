@@ -49,6 +49,7 @@ namespace TraversalCoreProje.Areas.Member.Controllers
             }
             user.Name = p.name;
             user.Surname = p.surname;
+            user.PhoneNumber = p.phonenumber;
             user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, p.password);
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)

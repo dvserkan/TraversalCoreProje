@@ -1,0 +1,40 @@
+﻿﻿
+@model EntityLayer.Concrete.Guide
+@{
+	ViewData["Title"] = "AddGuide";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Yeni Rehber Oluşturma Sayfası</h1>
+<form method="post">
+	<div class="form-group">
+		@Html.Label("Ad Soyad")
+		@Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+		@Html.ValidationMessageFor(x=> x.Name)
+	</div>
+	<br />
+	<div class="form-group">
+		@Html.Label("Rehber Fotoğraf")
+		@Html.TextBoxFor(x => x.Image, new { @class = "form-control" })
+		@Html.ValidationMessageFor(x => x.Image)
+	</div>
+	<br />
+	<div class="form-group">
+		@Html.Label("Instagram Url")
+		@Html.TextBoxFor(x => x.InstagramUrl, new { @class = "form-control" })
+	</div>
+	<br />
+	<div class="form-group">
+		@Html.Label("Twitter Url")
+		@Html.TextBoxFor(x => x.TwitterUrl, new { @class = "form-control" })
+	</div>
+	<br />
+	<div class="form-group">
+		@Html.Label("Açıklama")
+		@Html.TextAreaFor(x => x.Description, 3, 5, new { @class = "form-control" })
+		@Html.ValidationMessageFor(x => x.Description)
+	</div>
+	<br />
+	<button class="btn btn-outline-primary">Oluştur</button>
+</form>
+
