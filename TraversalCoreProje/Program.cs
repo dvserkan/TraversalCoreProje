@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,7 @@ builder.Services.AddControllersWithViews();
 //	x.AddDebug();
 //}); //Debug Loglama Kaydýný Tutma.
 
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly()); //Auto Mapper Config.
 
 builder.Services.AddLogging(logging =>
 {

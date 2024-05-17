@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Abstract
 {
-	public interface IGuideDal : IGenericDal<Guide>
+	public interface IContactUsDal : IGenericDal<ContactUs>
 	{
-		void ChangeToTrueByGuide(int id);
-		void ChangeToFalseByGuide(int id);
+		List<ContactUs> GetListContactUsByTrue();
+		List<ContactUs> GetListContactUsByFalse();
+		void ContactUsStatusChangeToFalse(int id);
 	}
 }

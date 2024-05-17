@@ -1,6 +1,9 @@
 ﻿using BusinessLayer.Abstract;
+using BusinessLayer.ValidationRules;
 using EntityLayer.Concrete;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace TraversalCoreProje.Areas.Admin.Controllers
 {
@@ -33,22 +36,21 @@ namespace TraversalCoreProje.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult AddGuide(Guide guide)
         {
-            //GuideValidator validationRules = new GuideValidator();
-            //ValidationResult result = validationRules.Validate(guide);
-            //if (result.IsValid)
-            //{
-            //    _guideService.TAdd(guide);
-            //    return RedirectToAction("Index");
-            //}
-            //else
-            //{
-            //    foreach (var item in result.Errors)
-            //    {
-            //        ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
-            //    }
-            //    return View();
-            //}
-            return View();
+            GuideValidator validationRules = new GuideValidator();
+            ValidationResult result = validationRules.Validate(guide);
+            if (result.IsValid)
+            {
+                _guideService.TAdd(guide);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
+                }
+                return View();
+            }
         }
         [Route("EditGuide")]
         [HttpGet]
@@ -69,14 +71,14 @@ namespace TraversalCoreProje.Areas.Admin.Controllers
 
         public IActionResult ChangeToTrue(int id)
         {
-            //_guideService.TChangeToTrueByGuide(id);
+            _guideService.TChangeToTrueByGuide(id);
             return RedirectToAction("Index", "Guide", new { area = "Admin" });
         }
         [Route("ChangeToFalse/{id}")]
 
         public IActionResult ChangeToFalse(int id)
         {
-            //_guideService.TChangeToFalseByGuide(id);
+            _guideService.TChangeToFalseByGuide(id);
             return RedirectToAction("Index", "Guide", new { area = "Admin" });
         }
     }
