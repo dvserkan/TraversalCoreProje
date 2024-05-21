@@ -5,6 +5,7 @@ using DataAccessLayer.Abstract;
 using DataAccessLayer.EntityFramework;
 using DTOLayer.DTOs.AnnouncementDTOs;
 using FluentValidation;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -72,6 +73,7 @@ namespace BusinessLayer.Container
 
             services.AddTransient<IValidator<AnnouncementAddDto>,AnnouncementValidator>();
 
-		}
+
+        }
     }
 }

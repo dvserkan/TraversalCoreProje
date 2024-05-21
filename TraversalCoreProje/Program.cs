@@ -5,13 +5,16 @@ using BusinessLayer.ValidationRules;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using EntityLayer.Concrete;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
+using TraversalCoreProje.CQRS.Handlers.DestinationHandlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +22,13 @@ builder.Services.AddCustomServices(); //custom scop oluþturma dýþarýdan oluþturd
 
 builder.Services.AddDbContext<Context>(); //Context Taným
 builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>().AddErrorDescriber<CustomErrorDescriber>(); //IdentityTaným & Custom Error
+
+builder.Services.AddScoped<GetAllDestinationQueryHandler>(); //CQRS TANIM
+builder.Services.AddScoped<CreateDestinationCommandHandler>(); //CQRS TANIM
+
+builder.Services.AddMediatR(Assembly.GetExecutingAssembly()); //MediaTR Kullanýmý 
+//builder.Services.AddMediatR(typeof(Program)); // Diðer bir yol.
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -29,6 +39,8 @@ builder.Services.AddControllersWithViews();
 //	x.SetMinimumLevel(LogLevel.Debug);
 //	x.AddDebug();
 //}); //Debug Loglama Kaydýný Tutma.
+
+builder.Services.AddHttpClient(); //Api istekleri karþýla
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly()); //Auto Mapper Config.
 
