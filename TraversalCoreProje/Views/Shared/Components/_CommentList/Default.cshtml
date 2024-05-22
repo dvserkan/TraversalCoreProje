@@ -1,30 +1,71 @@
 ﻿﻿@using EntityLayer.Concrete
 @model List<Comment>
+
+<style>
+    .comment-box {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .img-circle {
+        margin-right: 20px;
+    }
+
+    .media-body {
+        width: calc(100% - 70px); /* Resim ve sağ boşluk toplamı */
+        /* Gerekirse stillendirme yapabilirsiniz */
+    }
+
+    .time-rply {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .name-date {
+        display: flex;
+        align-items: center;
+    }
+
+    .name {
+        margin-right: 10px;
+    }
+
+    .date {
+        color: #999;
+        font-size: 14px;
+    }
+
+    .reply-last {
+        margin-left: auto;
+    }
+
+</style>
+
 <div class="comments mt-5">
-    <h4 class="side-title ">Yorumlar (@ViewBag.commentCount)</h4>
+    <h4 class="side-title">Yorumlar (@ViewBag.commentCount)</h4>
+    <br />
     @foreach (var item in Model)
     {
-        <div class="media mt-4">
-            <div class="img-circle">
-                @* <img src="@item.AppUser.ImageUrl" class="img-fluid" alt="..."> *@
-            </div>
-            <div class="media-body">
-
-                <ul class="time-rply mb-2">
-                    <li>
-                        @* <a href="#URL" class="name mt-0 mb-2 d-block">@item.AppUser.Name @item.AppUser.Surname</a> *@
-                        @(((DateTime)item.CommentDate).ToString("dd-MMM-yyyy"))
-
-                    </li>
-                    <li class="reply-last">
-                        <a href="#reply" class="reply">
-                            Yanıtla
-                        </a>
-                    </li>
-                </ul>
-                <p>
-                    @item.CommentContent
-                </p>
+        <div class="comment-box">
+            <div class="media mt-4">
+                <div class="img-circle">
+                    <img style="width: 90px; height: 90px; border-radius: 90%;" src="~/userimages/@item.AppUser.ImageUrl" class="img-fluid" alt="...">
+                </div>
+                <div class="media-body">
+                    <ul class="time-rply mb-2">
+                        <li class="name-date">
+                            <a href="#URL" class="name">@item.AppUser.Name @item.AppUser.Surname</a>
+                        </li>
+                        <li class="reply-last">
+                            <span class="date">@(((DateTime)item.CommentDate).ToString("dd-MMM-yyyy HH:MM"))</span>
+                            <a href="#reply" class="reply" style="margin-left:15px;">Yanıtla</a>
+                        </li>
+                    </ul>
+                    <p>@item.CommentContent</p>
+                </div>
             </div>
         </div>
     }

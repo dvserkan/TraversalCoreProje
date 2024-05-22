@@ -1,8 +1,11 @@
 ﻿using BusinessLayer.Abstract;
+using BusinessLayer.Abstract.AbstractUow;
 using BusinessLayer.Concrete;
+using BusinessLayer.Concrete.ConcreteUow;
 using BusinessLayer.ValidationRules;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.EntityFramework;
+using DataAccessLayer.UnitOfWork;
 using DTOLayer.DTOs.AnnouncementDTOs;
 using FluentValidation;
 using Microsoft.AspNetCore.Hosting;
@@ -72,6 +75,11 @@ namespace BusinessLayer.Container
 
 
             services.AddTransient<IValidator<AnnouncementAddDto>,AnnouncementValidator>();
+
+            services.AddScoped<IAccountDal , EfAccountDal>();
+            services.AddScoped<IAccountService , AccountManager>();
+
+            services.AddScoped<IUowDal,UowDal>();
 
 
         }

@@ -1,4 +1,6 @@
-﻿using EntityLayer.Concrete;
+﻿using AutoMapper;
+using DocumentFormat.OpenXml.Spreadsheet;
+using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,17 +15,16 @@ namespace TraversalCoreProje.Controllers
 
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-		private readonly ILogger<LoginController> _logger;
-		DateTime logdate = Convert.ToDateTime(DateTime.Now.ToShortDateString());
+        private readonly ILogger<LoginController> _logger;
 
-		public LoginController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ILogger<LoginController> logger)
-		{
-			_userManager = userManager;
-			_signInManager = signInManager;
+        public LoginController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ILogger<LoginController> logger)
+        {
+            _userManager = userManager;
+            _signInManager = signInManager;
             _logger = logger;
-		}
+        }
 
-		[HttpGet]
+        [HttpGet]
         public IActionResult SignUp()
         {
             return View();
@@ -38,7 +39,7 @@ namespace TraversalCoreProje.Controllers
                 Surname = p.Surname,
                 Email = p.Mail,
                 UserName = p.Username
-                
+
             };
             if (p.ConfirmPassword == p.Password)
             {
@@ -46,8 +47,8 @@ namespace TraversalCoreProje.Controllers
 
                 if (result.Succeeded)
                 {
-					_logger.LogInformation($"{p.Name} Kullanıcısı Saat: {logdate} Kayıt İşlemi Yapmıştır."); //Loglama İşlemi.
-					return RedirectToAction("SignIn");
+                    _logger.LogWarning($"{p.Name} Kullanıcısı Saat: {DateTime.Now}  Kayıt İşlemi Yapmıştır."); //Loglama İşlemi.
+                    return RedirectToAction("SignIn");
                 }
                 else
                 {
@@ -74,26 +75,44 @@ namespace TraversalCoreProje.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(p.username, p.password, false, true);
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+
                 if (result.Succeeded)
                 {
-					_logger.LogInformation($"{p.username} Kullanıcısı Saat: {logdate} Giriş İşlemi Yapmıştır."); //Loglama İşlemi.
-					return RedirectToAction("Index", "Profile", new { area = "Member" });
-				}
+                    // Kullanıcının rolü admin ise admin sayfasına , ziyaretçi ise profil sayfasına gönderilmesi sağlanır.
+                    // Kaynak Erhan Gündüz. https://github.com/erhangndz/MyAcademyOneMusic/blob/master/OneMusic.WebUI/Controllers/LoginController.cs
+                    var admin = await _userManager.IsInRoleAsync(user, "Admin");
+                    var visitor = await _userManager.IsInRoleAsync(user, "Visitor");
+
+                    if (admin == true)
+                    {
+                        _logger.LogWarning($"{user.Name} {user.Surname} Kullanıcısı Saat: {DateTime.Now} Giriş İşlemi Yapmıştır.");
+                        return RedirectToAction("Dashboard", "Admin", new { area = "Admin" });
+                        //Admin / Dashboard / Index /
+                    }
+                    else if (visitor == true)
+                    {
+                        _logger.LogWarning($"{user.Name} {user.Surname} Kullanıcısı Saat: {DateTime.Now}  Giriş İşlemi Yapmıştır."); //Loglama İşlemi.
+                        return RedirectToAction("Dashboard", "Member", new { area = "Member" });
+                        //Member / Profile / Index /
+                    }
+
+                }
                 else
                 {
                     return RedirectToAction("SignIn", "Login");
                 }
             }
 
-			return View();
-		}
+            return View();
+        }
 
         public async Task<IActionResult> LogOut()
         {
-			var user = await _userManager.FindByNameAsync(User.Identity.Name);
-			_logger.LogInformation($"{user.Name} Kullanıcısı Saat: {logdate} Çıkış İşlemi Yapmıştır."); //Loglama İşlemi.
-			await _signInManager.SignOutAsync();
-			return RedirectToAction("SignIn", "Login");
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            _logger.LogWarning($"{user.Name} {user.Surname} Kullanıcısı Saat: {DateTime.Now} Çıkış İşlemi Yapmıştır."); //Loglama İşlemi.
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("SignIn", "Login");
 
         }
 

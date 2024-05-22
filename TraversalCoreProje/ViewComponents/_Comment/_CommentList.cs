@@ -18,8 +18,8 @@ namespace TraversalCoreProje.ViewComponents._Comment
         public IViewComponentResult Invoke(int id)
         {
             ViewBag.commentCount = context.Comments.Where(x => x.DestinationID == id).Count();
-            var values = _commentService.TGetDestinationById(id);
-            return View(values);
+			var values = _commentService.TGetListCommentWithDestinationAndUser(id);
+			return View(values);
         }
     }
 }

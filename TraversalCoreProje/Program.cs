@@ -1,5 +1,7 @@
 using BusinessLayer.Abstract;
+using BusinessLayer.Abstract.AbstractUow;
 using BusinessLayer.Concrete;
+using BusinessLayer.Concrete.ConcreteUow;
 using BusinessLayer.Container;
 using BusinessLayer.ValidationRules;
 using DataAccessLayer.Abstract;
@@ -13,6 +15,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using Serilog;
+using Serilog.Core;
+using Serilog.Events;
 using System.Reflection;
 using TraversalCoreProje.CQRS.Handlers.DestinationHandlers;
 
@@ -29,7 +35,6 @@ builder.Services.AddScoped<CreateDestinationCommandHandler>(); //CQRS TANIM
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly()); //MediaTR Kullanýmý 
 //builder.Services.AddMediatR(typeof(Program)); // Diðer bir yol.
 
-
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -44,16 +49,19 @@ builder.Services.AddHttpClient(); //Api istekleri karþýla
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly()); //Auto Mapper Config.
 
-builder.Services.AddLogging(logging =>
+
+builder.Host.UseSerilog((context, loggerConfiguration) =>
 {
-	var path = Directory.GetCurrentDirectory();
-	logging.ClearProviders();
-	logging.SetMinimumLevel(LogLevel.Information);
-	logging.AddFile($"{path}\\Logs\\Log1.txt");
-});  //loglama Ýþlemi
+    loggerConfiguration
+        .MinimumLevel.ControlledBy(new LoggingLevelSwitch { MinimumLevel = LogEventLevel.Warning }) // Bu seviye ayarýný isteðe baðlý olarak deðiþtirebilirsiniz
+        .WriteTo.Console()
+        .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day);
+}); //Loglama
+
 
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

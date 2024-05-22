@@ -1,0 +1,61 @@
+﻿@model EntityLayer.Concrete.Destination
+<style>
+    .blog-post-align {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .blog-post-img .small-img {
+        width: 100px; /* Resmi küçültmek için boyutu ayarlayabilirsiniz */
+        height: 100px;
+    }
+
+    .blog-post-info {
+        text-align: center;
+    }
+
+    .blog-meta {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    .list-inline {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .list-inline-item {
+        display: inline;
+    }
+</style>
+
+<div class="py-5 w3l-homeblock1 text-center">
+    <div class="container mt-md-3">
+        <h3 class="blog-desc-big text-center mb-4">
+            Alanında en yetkin rehberlerimizle
+            en güncel seyahat hikayelerimizi okumalısınız!
+        </h3><br />
+        <div class="blog-post-align d-flex justify-content-center align-items-center">
+            <div class="blog-post-img me-3">
+                <a href="#" style="margin-right:15px;"><img src="@Model.Guide.Image" alt="" class="rounded-circle img-fluid small-img" /></a>
+            </div>
+            <div class="blog-post-info text-center">
+                <div class="author align-items-center mb-1">
+                    <b><h4> <a href="#">@Model.Guide.Name</a></h4> </b>
+                    <br /> Tur Rotaları: <a href="#url">@Model.Guide.Description</a>
+                </div>
+                <ul class="blog-meta list-inline">
+                    <li class="meta-item blog-lesson list-inline-item">
+                        <span class="meta-value"> @(((DateTime)Model.Date).ToString("dd-MMM-yyyy")) </span>
+                    </li>
+                    <li class="meta-item blog-students list-inline-item">
+                        <span class="meta-value"> 6 Dk. Okuma</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

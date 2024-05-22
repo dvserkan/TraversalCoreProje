@@ -1,20 +1,39 @@
-﻿@model List<Destination>
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@model IPagedList<Destination>
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_UILayout.cshtml";
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/_UILayout.cshtml";
 }
 
 <!doctype html>
 <html lang="zxx">
+<head>
+    <link rel="stylesheet" href="~/Traversal-Liberty/assets/css/style-liberty.css">
+    <script src="~/Traversal-Liberty/assets/js/bootstrap.min.js"></script>
+    <style>
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .page-item.active .page-link {
+            background-color: #000; /* Aktif sayfanın arka plan rengi */
+            color: #fff; /* Aktif sayfanın yazı rengi */
+            border-color: #000; /* Aktif sayfanın border rengi */
+        }
+    </style>
+</head>
 <body>
     <!-- about breadcrumb -->
     <section class="w3l-about-breadcrumb text-left">
         <div class="breadcrumb-bg breadcrumb-bg-about py-sm-5 py-4">
             <div class="container">
-                <h2 class="title">Rotalar </h2>
+                <h2 class="title">Rotalar</h2>
                 <ul class="breadcrumbs-custom-path mt-2">
                     <li><a href="/Defualt/Index/">Ana Sayfa</a></li>
-                    <li class="active"><span class="fa fa-arrow-right mx-2" aria-hidden="true"></span> Rotalar </li>
+                    <li class="active"><span class="fa fa-arrow-right mx-2" aria-hidden="true"></span> Rotalar</li>
                 </ul>
             </div>
         </div>
@@ -28,16 +47,16 @@
                 <div class="row">
                     @foreach (var item in Model)
                     {
-                        <div class="col-lg-4 col-md-4 col-6">
+                        <div class="col-lg-4 col-md-4 col-6 mb-4">
                             <div class="column">
                                 <a href="/Destination/DestinationDetails/@item.DestinationId">
                                     <img src="@item.ImageUrl" alt="" style="width:370px; height:300px" class="img-fluid">
                                 </a>
                                 <div class="info">
                                     <h4><a href="/Destination/DestinationDetails/@item.DestinationId">@item.City</a></h4>
-                                    <p>@item.DayNight </p>
+                                    <p>@item.DayNight</p>
                                     <div class="dst-btm">
-                                        <h6 class="">Başlayan fiyatlar </h6>
+                                        <h6 class="">Başlayan fiyatlar</h6>
                                         <span>@item.Price.ToString("#,0") ₺</span>
                                     </div>
                                 </div>
@@ -45,11 +64,18 @@
                         </div>
                     }
                 </div>
+                <div class="pagination-container">
+                    @Html.PagedListPager((IPagedList)Model, p => Url.Action("Index", new { p }),
+                             new PagedListRenderOptions
+                    {
+                        LiElementClasses = new string[] { "page-item" },
+                        PageClasses = new string[] { "page-link" },
+                        Display = PagedListDisplayMode.IfNeeded,
+                        ActiveLiElementClass = "active", // Aktif sayfa sınıfı
+                    })
+                </div>
             </div>
         </div>
     </section>
-    <link rel="stylesheet" href="~/Traversal-Liberty/assets/css/style-liberty.css">
-    <script src="~/Traversal-Liberty/assets/js/bootstrap.min.js"></script>
 </body>
 </html>
-

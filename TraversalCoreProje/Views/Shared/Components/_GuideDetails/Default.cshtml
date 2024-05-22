@@ -1,0 +1,86 @@
+﻿
+@model EntityLayer.Concrete.Guide
+
+<style>
+    .author-card {
+        border: 1px solid #ccc;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .author-icons {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+        .author-icons li {
+            display: inline-block;
+        }
+
+        .author-icons a {
+            text-decoration: none;
+            color: #333;
+        }
+
+            .author-icons a:hover {
+                color: #007bff;
+            }
+</style>
+
+<div class="author-card mt-5">
+    <div class="row align-items-center">
+        <div class="col-sm-3 col-6">
+            <div>
+                <img style="width:150px;height:150px;margin-left:40px;" src="@Model.Image" alt="" class="rounded-circle img-fluid">
+            </div>
+        </div>
+        <div class="col-sm-9 mt-sm-0 mt-3">
+            <h3 class="mb-3 title">@Model.Name</h3>
+            <p>
+                @Model.Description2
+            </p>
+            <ul class="author-icons mt-4">
+                <li>
+                    <a class="facebook" href="#url">
+                        <span class="fa fa-facebook"
+                              aria-hidden="true"></span>
+                    </a>
+                </li>
+                <li>
+                    <a class="twitter" href="#url">
+                        <span class="fa fa-twitter"
+                              aria-hidden="true"></span>
+                    </a>
+                </li>
+                <li>
+                    <a class="google" href="#url">
+                        <span class="fa fa-google-plus"
+                              aria-hidden="true"></span>
+                    </a>
+                </li>
+                <li>
+                    <a class="linkedin" href="#url">
+                        <span class="fa fa-linkedin"
+                              aria-hidden="true"></span>
+                    </a>
+                </li>
+                <li>
+                    <a class="github" href="#url">
+                        <span class="fa fa-github"
+                              aria-hidden="true"></span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dribbble" href="#url">
+                        <span class="fa fa-dribbble"
+                              aria-hidden="true"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
