@@ -31,6 +31,7 @@ namespace DataAccessLayer.Concrete
 		public DbSet<Resarvation> Resarvations { get; set; }
 		public DbSet<Announcement> Announcements { get; set; }
 		public DbSet<Account> Accounts { get; set; }
+		public DbSet<Log> Logs { get; set; }
 	
 
 	}

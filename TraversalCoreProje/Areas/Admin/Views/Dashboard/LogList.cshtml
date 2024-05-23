@@ -1,0 +1,102 @@
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@model IPagedList<Log>;
+@{
+    ViewData["Title"] = "LogList";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int count = 0;
+}
+
+<h1>Log Listesi</h1>
+
+<table class="table table-bordered">
+    <tr>
+        <th>#</th>
+        <th>Log Tarihi</th>
+        <th>Log Seviyesi</th>
+        <th>Log Mesajı</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        count++;
+        <tr>
+            <th>@count</th>
+            <td>@($"{item.TimeStamp:dd-MM-yyyy HH:mm}")</td>
+            <td>@item.Level</td>
+            <td>@item.Message</td>
+        </tr>
+    }
+</table>
+
+<style>
+    .pagination-container a {
+        display: inline-block;
+        padding: 5px 10px;
+        margin: 0 5px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+
+        .pagination-container a.active {
+            background-color: #337ab7;
+            color: #fff;
+        }
+</style>
+
+<div class="pagination-container" id="pagination-container">
+    <!-- Sayfalama bağlantıları buraya eklenecek -->
+</div>
+
+<script>
+    var currentPage = 1; // Başlangıçta sayfa 1 aktif olacak
+    var totalPages = 5; // Toplam sayfa sayısı
+    var paginationContainer = document.getElementById("pagination-container");
+
+    // Sayfa bağlantılarını oluştur
+    for (var i = 1; i <= totalPages; i++) {
+        var link = document.createElement("a");
+        link.href = createUrl(i); // Sayfa URL'sini oluşturmak için createUrl fonksiyonunu kullan
+        link.textContent = i;
+        link.addEventListener("click", function (event) {
+
+            var clickedPage = parseInt(event.target.textContent);
+            currentPage = clickedPage; // Tıklanan sayfa numarasını güncelle
+            
+        });
+        paginationContainer.appendChild(link);
+    }
+
+    // Aktif sayfayı güncellemek için fonksiyon
+    function updateActivePage() {
+        var links = paginationContainer.getElementsByTagName("a");
+        for (var j = 0; j < links.length; j++) {
+            var link = links[j];
+            var pageNumber = parseInt(link.textContent);
+            if (pageNumber === currentPage) {
+                link.classList.add("active"); // Tıklanan sayfa bağlantısına "active" sınıfını ekle
+            } else {
+                link.classList.remove("active"); // Diğer sayfa bağlantılarından "active" sınıfını kaldır
+            }
+        }
+    }
+
+    // URL oluşturmak için fonksiyon
+    function createUrl(page) {
+        var baseUrl = "@Url.Content("~/")"; // Ana URL
+        var controller = "Dashboard"; // Controller ismi
+        var action = "LogList"; // Action ismi
+        var area = "Admin"; // Alan adı
+
+        return baseUrl + area + "/" + controller + "/" + action + "?p=" + page;
+    }
+
+    // Sayfa yüklendiğinde aktif sayfayı güncelleyin
+    window.onload = function () {
+        updateActivePage();
+    }
+</script>
+
+
+

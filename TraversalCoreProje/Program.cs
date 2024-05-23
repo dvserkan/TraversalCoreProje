@@ -19,6 +19,10 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pag
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
+using Serilog.Sinks.MSSqlServer;
+using System.Collections.ObjectModel;
+using System.Configuration;
+using System.Data;
 using System.Reflection;
 using TraversalCoreProje.CQRS.Handlers.DestinationHandlers;
 
@@ -50,14 +54,29 @@ builder.Services.AddHttpClient(); //Api istekleri karþýla
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly()); //Auto Mapper Config.
 
 
-builder.Host.UseSerilog((context, loggerConfiguration) =>
+// Appsettings SqlConnect Okuma Veri tabanýna yazma için
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Host.UseSerilog((context, loggerConfiguration) => //Loglama ve Veri tabanýna Kayýt Etme
 {
     loggerConfiguration
-        .MinimumLevel.ControlledBy(new LoggingLevelSwitch { MinimumLevel = LogEventLevel.Warning }) // Bu seviye ayarýný isteðe baðlý olarak deðiþtirebilirsiniz
+        .MinimumLevel.Debug()
+        .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+        .Enrich.FromLogContext()
         .WriteTo.Console()
-        .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day);
-}); //Loglama
+        .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+        .WriteTo.MSSqlServer(connectionString, sinkOptions: new MSSqlServerSinkOptions { TableName = "Logs" });
+}); 
 
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(1000); //AUT KALMA ZAMANI
+    options.AccessDeniedPath = "/ErrorPage/Error404/";
+    options.LoginPath = "/Login/SignIn/";
+    options.LogoutPath = "/Login/LogOut/";
+});
 
 
 var app = builder.Build();
