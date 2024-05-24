@@ -12,7 +12,9 @@ using EntityLayer.Concrete;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
@@ -31,13 +33,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCustomServices(); //custom scop oluþturma dýþarýdan oluþturduðum sýnýfdakileri çekme.
 
 builder.Services.AddDbContext<Context>(); //Context Taným
-builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>().AddErrorDescriber<CustomErrorDescriber>(); //IdentityTaným & Custom Error
+builder.Services.AddIdentity<AppUser, AppRole>().AddTokenProvider<DataProtectorTokenProvider<AppUser>>(TokenOptions.DefaultProvider).AddEntityFrameworkStores<Context>().AddErrorDescriber<CustomErrorDescriber>(); //IdentityTaným & Custom Error & password token gönderme
 
 builder.Services.AddScoped<GetAllDestinationQueryHandler>(); //CQRS TANIM
 builder.Services.AddScoped<CreateDestinationCommandHandler>(); //CQRS TANIM
 
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly()); //MediaTR Kullanýmý 
-//builder.Services.AddMediatR(typeof(Program)); // Diðer bir yol.
+                                                              //builder.Services.AddMediatR(typeof(Program)); // Diðer bir yol.
+
+
+
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources"); // Opsiyonel, kaynak dosya yolunu belirtir.
+builder.Services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix).AddDataAnnotationsLocalization(); // Diðer hizmetler
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -91,7 +99,9 @@ if (!app.Environment.IsDevelopment())
 }
 app.UseStatusCodePagesWithReExecute("/ErrorPage/Error404", "?code={0}"); //Hata sayfasý yönlendirme
 
-
+var suppertedCultures = new[] { "tr", "fr", "es", "gr", "en", "de" };
+var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(suppertedCultures[1]).AddSupportedCultures(suppertedCultures).AddSupportedUICultures(suppertedCultures);
+app.UseRequestLocalization(localizationOptions); //Çoklu Dil Desteði.
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

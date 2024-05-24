@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.Abstract;
+using BusinessLayer.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TraversalCoreProje.Areas.Member.Controllers
@@ -19,6 +20,19 @@ namespace TraversalCoreProje.Areas.Member.Controllers
         {
             var values = _destinationService.TGetList();
             return View(values);
+        }
+
+        public IActionResult GetCitiesSearchByName(string searchString)
+        {
+            ViewData["CurrentFilter"] = searchString;
+            var values = from x in _destinationService.TGetList() select x;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                values = values.Where(y => y.City.Contains(searchString));
+            }
+            return View(values.ToList());
+
+            // <input type="text" class="form-control" placeholder="Aranılacak Kelime..." name="searchString" value="@ViewData["CurrentFilter"]">
         }
     }
 }

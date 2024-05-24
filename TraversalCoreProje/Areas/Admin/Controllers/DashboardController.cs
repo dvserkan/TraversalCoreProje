@@ -7,6 +7,7 @@ namespace TraversalCoreProje.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "Admin")]
+    [AllowAnonymous]
     public class DashboardController : Controller
     {
         private readonly Context _context;

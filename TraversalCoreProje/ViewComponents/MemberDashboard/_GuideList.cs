@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
 using Microsoft.AspNetCore.Mvc;
+using X.PagedList;
 
 namespace TraversalCoreProje.ViewComponents.MemberDashboard
 {
@@ -13,9 +14,9 @@ namespace TraversalCoreProje.ViewComponents.MemberDashboard
             _guideService = guideService;
         }
 
-        public IViewComponentResult Invoke()
+        public IViewComponentResult Invoke(int p = 1)
         {
-            var values = _guideService.TGetList();
+            var values = _guideService.TGetList().ToPagedList(p, 5);
             return View(values);
         }
 

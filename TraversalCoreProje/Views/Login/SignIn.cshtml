@@ -27,6 +27,17 @@
     <link rel="stylesheet" type="text/css" href="~/Login_v1/css/util.css">
     <link rel="stylesheet" type="text/css" href="~/Login_v1/css/main.css">
     <!--===============================================================================================-->
+    <style>
+        .modal-dialog-centered {
+            display: flex;
+            align-items: center;
+            min-height: calc(100% - 1rem);
+        }
+
+        .modal-content {
+            flex-grow: 1;
+        }
+    </style>
 </head>
 <body>
 
@@ -74,7 +85,7 @@
                         <span class="txt1">
                             Şifremi Unuttum
                         </span>
-                        <a class="txt2" href="#">
+                        <a class="txt2" href="#" data-bs-toggle="modal" data-bs-target="#forgetPasswordModal">
                             Kullanıcı adı / mail?
                         </a>
                     </div>
@@ -90,8 +101,7 @@
         </div>
     </div>
 
-
-
+    @await Html.PartialAsync("/Views/Login/PasswordPartial.cshtml")
 
     <!--===============================================================================================-->
     <script src="~/Login_v1/vendor/jquery/jquery-3.2.1.min.js"></script>
@@ -109,6 +119,7 @@
     </script>
     <!--===============================================================================================-->
     <script src="~/Login_v1/js/main.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>
+

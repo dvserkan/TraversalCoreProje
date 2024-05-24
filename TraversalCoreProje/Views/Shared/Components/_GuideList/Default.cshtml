@@ -1,5 +1,7 @@
 ﻿@using EntityLayer.Concrete
-@model List<Guide>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@model IPagedList<Guide>
 
 
 <div class="col-12 col-xl-4">
@@ -24,7 +26,18 @@
 				</ul>
 			}
 		</div>
+		<div class="pagination-container">
+			@Html.PagedListPager((IPagedList)Model, p => Url.Action("Invoke", new { p }),
+							new PagedListRenderOptions
+			{
+				LiElementClasses = new string[] { "page-item" },
+				PageClasses = new string[] { "page-link" },
+				Display = PagedListDisplayMode.IfNeeded,
+				ActiveLiElementClass = "active", // Aktif sayfa sınıfı
+			})
+		</div>
 	</div>
+
 </div>
 
 

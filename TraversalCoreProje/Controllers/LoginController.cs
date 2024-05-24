@@ -72,6 +72,8 @@ namespace TraversalCoreProje.Controllers
         [HttpPost]
         public async Task<IActionResult> SignIn(UserSignInViewModel p)
         {
+            ModelState.Clear();
+
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(p.username, p.password, false, true);
