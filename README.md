@@ -8,7 +8,7 @@ Traversal Rezervasyon Projesi, kullanıcıların admin tarafından oluşturulmu�
 - Rezervasyon yapabilmesi
 
 ## Kullanılan Teknolojiler
-- **Asp.Net Core 5.0**
+- **Asp.Net Core 8.0**
 - **Entity Framework Code First**
 - **MSSQL Server**
 - **LINQ**
